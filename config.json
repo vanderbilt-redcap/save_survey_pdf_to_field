@@ -17,5 +17,36 @@
             "institution": "CTS-IT - University of Florida"
         }
       ],
-    "project-settings": []
+    "project-settings": [
+      {
+         "key": "email_address",
+         "name": "email address",
+         "required": true,
+         "type": "text",
+         "repeatable": false
+      },
+      {
+          "key": "instrument_upload_field_pair",
+          "name": "instrument-upload_field pair",
+          "required": true,
+          "type": "sub_settings",
+          "repeatable": true,
+          "sub_settings": [
+            {
+              "key": "instrument",
+              "name": "instrument name",
+              "required": true,
+              "type": "text",
+              "repeatable": false
+            },
+            {
+              "key": "upload_field",
+              "name": "upload field name",
+              "required": true,
+              "type": "text",
+              "repeatable": false
+            }
+          ]
+      }
+    ]
 }
