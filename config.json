@@ -1,0 +1,21 @@
+{
+    "name": "save_survey_pdf_to_field module",
+    "namespace": "SaveSurveyPdfToFieldModule\\ExternalModule",
+    "description": "A REDCap external module to save a PDF of a survey to a file upload field",
+    "permissions": [
+        "hook_survey_complete"
+    ],
+    "authors": [
+        {
+            "name": "Dileep Rajput",
+            "email": "rajputd@ufl.edu",
+            "institution": "CTS-IT - University of Florida"
+        },
+        {
+            "name": "Philip B. Chase",
+            "email": "pbc@ufl.edu",
+            "institution": "CTS-IT - University of Florida"
+        }
+      ],
+    "project-settings": []
+}
