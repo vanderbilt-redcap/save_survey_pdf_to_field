@@ -19,31 +19,31 @@
       ],
     "project-settings": [
       {
-         "key": "email_address",
+         "key": "ssptf_email_address",
          "name": "email address",
          "required": true,
          "type": "text",
          "repeatable": false
       },
       {
-          "key": "instrument_upload_field_pair",
+          "key": "ssptf_source_target_pairs",
           "name": "instrument-upload_field pair",
           "required": true,
           "type": "sub_settings",
           "repeatable": true,
           "sub_settings": [
             {
-              "key": "instrument",
+              "key": "ssptf_source_instrument",
               "name": "instrument name",
               "required": true,
-              "type": "text",
+              "type": "form-list",
               "repeatable": false
             },
             {
-              "key": "upload_field",
+              "key": "ssptf_target_upload_field",
               "name": "upload field name",
               "required": true,
-              "type": "text",
+              "type": "field-list",
               "repeatable": false
             }
           ]
