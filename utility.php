@@ -70,13 +70,19 @@ function uploadPdfToEdocs($file_path, $filename) {
  * @param $record
  *  record id
  *
+ * @param $field
+ *  field name
+ *
+ * @param $event
+ *  event id
+ *
  * @return boolean
  *  returns true if it has a value, false otherwise
  */
-function fieldHasValue($project, $record, $field) {
-  $fields = REDCap::getData($project, 'json', $record, $field);
+function fieldHasValue($project, $record, $field, $event) {
+  $fields = REDCap::getData($project, 'json', $record, $field, $event);
   $value = json_decode($fields, true)[0][$field];
-  return !(isset($value) || is_null($value));
+  return isset($value) && !is_null($value) && $value !== "";
 }
 
 ?>
