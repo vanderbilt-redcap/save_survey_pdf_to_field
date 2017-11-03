@@ -85,4 +85,25 @@ function fieldHasValue($project, $record, $field, $event) {
   return isset($value) && !is_null($value) && $value !== "";
 }
 
+/**
+ * Checks if the given field has a value in that specific project and record
+ *
+ * @param $field
+ *  field name
+ *
+ * @return boolean
+ *  returns true if it exists, false otherwise
+ */
+
+function doesFieldExist($field){
+  global $Proj;
+  $fields = array_keys($Proj->metadata);
+
+  if (array_search($field, $fields) === false) {
+    return false;
+  }
+
+  return true;
+}
+
 ?>
