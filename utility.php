@@ -79,49 +79,4 @@ function fieldHasValue($project, $record, $field) {
   return !(isset($value) || is_null($value));
 }
 
-/**
- * Checks if the given field is repeated across events
- *
- * @param $project
- *  project id
- *
- * @param $record
- *  record id
- *
- * @param $field
- *  field name
- * @return boolean
- *  returns true if it is repeating across events, false otherwise
- */
-function fieldRepeatedAcrossEvents($project, $record, $field) {
-  $fields = REDCap::getData($project, 'array', $record, $field);
-  if(count($fields[$record]) > 1) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Checks if the given field is in a repeating instrument
- *
- * @param $field
- *  field name
- *
- * @return boolean
- *  returns true if field is in a repeating instrument, false otherwise
- */
-function fieldInRepeatingInstrument($field) {
-  global $Proj;
-  $parent_instrument = $Proj->metadata[$field]['form_name'];
-
-  foreach($Proj->RepeatingFormsEvents as $instruments) {
-    $keys = array_keys($instruments);
-    if(array_search($parent_instrument, $keys) !== FALSE) {
-      return true;
-    }
-  }
-
-  return false;
-}
 ?>
