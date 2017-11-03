@@ -61,6 +61,24 @@ function uploadPdfToEdocs($file_path, $filename) {
   return $doc_id;
 }
 
+function setUploadField($project_id, $record, $event, $field, $doc_id) {
+  global $conn;
+
+  //check connection
+  if($conn->connect_errno){
+    return false;
+  }
+
+  $query = "INSERT INTO redcap_data (project_id, event_id, record, field_name, value, instance) VALUES('$project_id', '$event', '$record', '$field', '$doc_id', NULL)";
+  $result = $conn->query($query);
+  if(!$result) {
+    return false;
+  }
+
+  return true;
+}
+
+
 /**
  * Checks if the given field has a value in that specific project and record
  *
