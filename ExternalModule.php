@@ -53,7 +53,7 @@ class ExternalModule extends AbstractExternalModule {
 
       if ($writable) {
         //upload pdf into designated upload field
-        $doc_id = uploadPdfToEdocs($path_to_temp_file, $filename);
+        $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
         setUploadField($project_id, $record, $event_id, $target_upload_field, $doc_id);
       } else {
           //send error email

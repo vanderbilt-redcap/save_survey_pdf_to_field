@@ -54,7 +54,7 @@ function makePDF($project_id, $record, $instrument, $event_id, $repeat_instance)
  */
 function uploadPdfToEdocs($file_path, $filename) {
   $_FILE['type'] = "application/pdf";
-  $_FILE['name'] = $filename . date('Y-m-d_Hi') . ".pdf";
+  $_FILE['name'] = $filename . "_" . date('Y-m-d_Hi') . ".pdf";
   $_FILE['tmp_name'] = $file_path;
   $_FILE['size'] = filesize($_FILE['tmp_name']);
   $doc_id = Files::uploadFile($_FILE);
