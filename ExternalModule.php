@@ -56,6 +56,9 @@ class ExternalModule extends AbstractExternalModule {
         $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
         setUploadField($project_id, $record, $event_id, $target_upload_field, $doc_id);
       } else {
+          //log failure
+          logMessage("ERROR: PDF of an instrument could not be saved.");
+
           //send error email
           $reciever_addr = AbstractExternalModule::getProjectSetting('ssptf_reciever_address');
           $sender_addr = AbstractExternalModule::getSystemSetting('ssptf_sender_address');
@@ -68,6 +71,11 @@ class ExternalModule extends AbstractExternalModule {
           project's configuration, make changes as needed,and upload this PDF to
           this research subject's record.";
           $sent = sendEmail($reciever_addr, $sender_addr, $cc, $subject, $body, $path_to_temp_file);
+
+          //notify user if email failed to send
+          if (!$sent) {
+            logMessage("ERROR: could not send email containing the unsaved PDF of an instrument.");
+          }
       }
 
       unlink($path_to_temp_file);
