@@ -57,6 +57,17 @@ class ExternalModule extends AbstractExternalModule {
         setUploadField($project_id, $record, $event_id, $target_upload_field, $doc_id);
       } else {
           //send error email
+          $reciever_addr = AbstractExternalModule::getProjectSetting('ssptf_reciever_address');
+          $sender_addr = AbstractExternalModule::getSystemSetting('ssptf_sender_address');
+          $cc = AbstractExternalModule::getSystemSetting('ssptf_cc');
+          $subject = "Failed to send PDF!";
+          $url = "http://". $_SERVER["HTTP_HOST"] . "/redcap/redcap_v" . REDCAP_VERSION . "/DataEntry/record_home.php?pid=" . $project_id . "&id=" . $record . "&arm=" . getArm();
+          $body = "ERROR: REDCap failed to save a PDF of an instrument for this
+          research subject: " . "<a href=\"". $url . "\">" . $url . "</a>" .
+          " That document is attached to this message. Please review this REDCap
+          project's configuration, make changes as needed,and upload this PDF to
+          this research subject's record.";
+          $sent = sendEmail($reciever_addr, $sender_addr, $cc, $subject, $body, $path_to_temp_file);
       }
 
       unlink($path_to_temp_file);
