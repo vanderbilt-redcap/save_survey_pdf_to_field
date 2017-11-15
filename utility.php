@@ -159,4 +159,8 @@ function sendEmail($reciever, $sender, $cc = '', $subject, $body, $attachment_fi
   $email->setBody($body);
   return $email->send();
 }
+
+function logMessage($message) {
+  REDCap::logEvent($message);
+}
 ?>
