@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once APP_PATH_DOCROOT . '../redcap_connect.php';
 require_once APP_PATH_DOCROOT . 'Classes/Files.php';
+require_once APP_PATH_DOCROOT . 'Classes/Message.php';
 
 /**
  * Creates a pdf of the given instrument.
@@ -112,7 +113,6 @@ function fieldHasValue($project, $record, $field, $event) {
  * @return boolean
  *  returns true if it exists, false otherwise
  */
-
 function doesFieldExist($field){
   global $Proj;
   $fields = array_keys($Proj->metadata);
@@ -124,4 +124,39 @@ function doesFieldExist($field){
   return true;
 }
 
+/**
+ * sends an email with the given parameters. Can optionally cc and add attachments
+ *
+ * @param $reciever
+ *  email reciepient
+ *
+ * @param $sender
+ *  email sender
+ *
+ * @param $cc
+ *  email to send a carbon copy to
+ *
+ * @param $subject
+ *  subject of email
+ *
+ * @param $body
+ *  email contents
+ *
+ * @param $attachment_file_path
+ *  full file path of a file(including its file name). this file will be
+ *  attached to this email.
+ *
+ * @return boolean
+ *  returns true if email is successfully sent, false otherwise
+ */
+function sendEmail($reciever, $sender, $cc = '', $subject, $body, $attachment_file_path = NULL) {
+  $email = new Message;
+  $email->setTo($reciever);
+  $email->setFrom($sender);
+  $email->setCc($cc);
+  $email->setSubject($subject);
+  $email->setAttachment($attachment_file_path);
+  $email->setBody($body);
+  return $email->send();
+}
 ?>
