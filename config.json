@@ -17,10 +17,26 @@
             "institution": "CTS-IT - University of Florida"
         }
       ],
+    "system-settings" : [
+      {
+        "key" : "ssptf_sender_address",
+        "name" : "sender email address",
+        "required": true,
+        "type": "text",
+        "repeatable": false
+      },
+      {
+        "key": "ssptf_cc",
+        "name": "CC",
+        "required": false,
+        "type": "text",
+        "repeatable": false
+      }
+    ],
     "project-settings": [
       {
-         "key": "ssptf_email_address",
-         "name": "email address",
+         "key": "ssptf_reciever_address",
+         "name": "reciever email address",
          "required": true,
          "type": "text",
          "repeatable": false
