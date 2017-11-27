@@ -60,7 +60,7 @@ class ExternalModule extends AbstractExternalModule {
           logMessage("ERROR: PDF of an instrument could not be saved.");
 
           //send error email
-          $reciever_addr = AbstractExternalModule::getProjectSetting('ssptf_reciever_address');
+          $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
           $sender_addr = AbstractExternalModule::getSystemSetting('ssptf_sender_address');
           $cc = AbstractExternalModule::getSystemSetting('ssptf_cc');
           $subject = "ERROR: PDF of REDCap instrument could not be saved.";
@@ -70,7 +70,7 @@ class ExternalModule extends AbstractExternalModule {
           " That document is attached to this message. Please review this REDCap
           project's configuration, make changes as needed,and upload this PDF to
           this research subject's record.";
-          $sent = sendEmail($reciever_addr, $sender_addr, $cc, $subject, $body, $path_to_temp_file);
+          $sent = sendEmail($receiver_addr, $sender_addr, $cc, $subject, $body, $path_to_temp_file);
 
           //notify user if email failed to send
           if (!$sent) {

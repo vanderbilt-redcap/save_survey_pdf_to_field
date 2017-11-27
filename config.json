@@ -35,8 +35,8 @@
     ],
     "project-settings": [
       {
-         "key": "ssptf_reciever_address",
-         "name": "reciever email address",
+         "key": "ssptf_receiver_address",
+         "name": "receiver email address",
          "required": true,
          "type": "text",
          "repeatable": false

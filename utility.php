@@ -127,8 +127,8 @@ function doesFieldExist($field){
 /**
  * sends an email with the given parameters. Can optionally cc and add attachments
  *
- * @param $reciever
- *  email reciepient
+ * @param $receiver
+ *  email receipient
  *
  * @param $sender
  *  email sender
@@ -149,9 +149,9 @@ function doesFieldExist($field){
  * @return boolean
  *  returns true if email is successfully sent, false otherwise
  */
-function sendEmail($reciever, $sender, $cc = '', $subject, $body, $attachment_file_path = NULL) {
+function sendEmail($receiver, $sender, $cc = '', $subject, $body, $attachment_file_path = NULL) {
   $email = new Message;
-  $email->setTo($reciever);
+  $email->setTo($receiver);
   $email->setFrom($sender);
   $email->setCc($cc);
   $email->setSubject($subject);
