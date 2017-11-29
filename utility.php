@@ -62,6 +62,27 @@ function uploadPdfToEdocs($file_path, $filename) {
   return $doc_id;
 }
 
+/**
+ * links a file in edocs to a file upload field
+ *
+ * @param $project_id
+ *  Project id
+ *
+ * @param $record
+ *  record id
+ *
+ * @param $event
+ *  event id
+ *
+ * @param $field
+ *  field name
+ *
+ * @param $doc_id
+ *  document id assigned to the file in edocs
+ *
+ * @return boolean success
+ *  returns true if sucessful, false otherwise
+*/
 function setUploadField($project_id, $record, $event, $field, $doc_id) {
   global $conn;
 
