@@ -16,7 +16,7 @@ This REDCap module generates a PDF of a survey upon completion and saves it to a
 
 Before you can configure this module, you will need to create the surveys and fields needed for configuration. This module can save PDFs for as many surveys as desired, but each survey is saved as its own PDF. The PDFs must be saved to file upload fields in a non-survey instrument. On that instrument create a file upload field for each survey that needs to be saved.
 
-Should you need to save multiple revisions of a survey PDF for a single record\_id, use the Online Designer to copy the file upload file as many times as you need. This module will use the original field name as a basename and append '\_1', '\_2', '\_3', etc. looking for additional fields into which it can save the PDF.
+Should you need to save multiple revisions of a survey PDF for a single record\_id, use the Online Designer to copy the file upload file as many times as you need. This module will use the original field name as a basename and append '\_1', '\_2', '\_3', etc. looking for additional fields into which it can save the PDF. Also, set the source instrument as a repeating instrument so that the survey can be filled out multiple times.
 
 With the surveys and file upload fields created, you can proceed with module configuration.
 
