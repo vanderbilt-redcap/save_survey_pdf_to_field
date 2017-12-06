@@ -36,11 +36,20 @@ class ExternalModule extends AbstractExternalModule {
       $target_fields = AbstractExternalModule::getProjectSetting('ssptf_target_upload_field');
       $target_upload_field = $target_fields[$index];
 
-      //check if we can write to $target_upload_field else check other base name variations
+      $matches = array();
+      $index = 1;
+      $target_upload_field_name = $target_upload_field;
+      if (preg_match('#^(.+)_([0-9]+)$#', $target_upload_field, $matches)) {
+          $target_upload_field_name = $matches[1];
+          $index = (int)$matches[2];
+      }
+
+      //check if we can write to $target_upload_field_name else check other base name variations
       $writable = false;
-      for($count = 1; $count <= ATTEMPT_LIMIT + 1; $count++) {
-        if(doesFieldExist($target_upload_field . $extension) && !fieldHasValue($project_id, $record, $target_upload_field . $extension, $event)) {
-          $target_upload_field = $target_upload_field . $extension;
+      for($count = $index; $count <= ATTEMPT_LIMIT + 1; $count++) {
+        if(doesFieldExist($target_upload_field_name . $extension) && !fieldHasValue($project_id, $record, $target_upload_field_name . $extension, $event))
+        {
+          $target_upload_field_name = $target_upload_field_name . $extension;
           $writable = true;
           break;
         }
@@ -54,7 +63,7 @@ class ExternalModule extends AbstractExternalModule {
       if ($writable) {
         //upload pdf into designated upload field
         $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
-        setUploadField($project_id, $record, $event_id, $target_upload_field, $doc_id);
+        setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
       } else {
           //log failure
           logMessage("ERROR: PDF of an instrument could not be saved.");
