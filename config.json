@@ -9,17 +9,22 @@
         {
             "name": "Dileep Rajput",
             "email": "rajputd@ufl.edu",
-            "institution": "CTS-IT - University of Florida"
+            "institution": "University of Florida - CTS-IT"
         },
         {
             "name": "Philip B. Chase",
             "email": "pbc@ufl.edu",
-            "institution": "CTS-IT - University of Florida"
+            "institution": "University of Florida - CTS-IT"
         },
-	{
+        {
+            "name": "Taryn Stoffs",
+            "email": "tls@ufl.edu",
+            "institution": "University of Florida - CTS-IT"
+        },
+        {
             "name": "Marly Cormar",
             "email": "marlycormar@ufl.edu",
-            "institution": "CTS-IT - University of Florida"
+            "institution": "University of Florida - CTS-IT"
         }
       ],
     "system-settings" : [
