@@ -1,0 +1,83 @@
+{
+    "name": "Save Survey PDF to a Field",
+    "namespace": "SaveSurveyPdfToFieldModule\\ExternalModule",
+    "description": "This module generates a PDF of a survey upon completion and saves it to a REDCap file upload field. It is configured at the project level with source instrument/target field pairs. In the event of save errors, the PDF is sent to a backup email address.",
+    "permissions": [
+        "hook_survey_complete"
+    ],
+    "authors": [
+        {
+            "name": "Dileep Rajput",
+            "email": "rajputd@ufl.edu",
+            "institution": "University of Florida - CTS-IT"
+        },
+        {
+            "name": "Philip B. Chase",
+            "email": "pbc@ufl.edu",
+            "institution": "University of Florida - CTS-IT"
+        },
+        {
+            "name": "Taryn Stoffs",
+            "email": "tls@ufl.edu",
+            "institution": "University of Florida - CTS-IT"
+        },
+        {
+            "name": "Tiago Bember Simeao",
+            "email": "tbembersimeao@ufl.edu",
+            "institution": "University of Florida - CTS-IT"
+        },
+        {
+            "name": "Marly Cormar",
+            "email": "marlycormar@ufl.edu",
+            "institution": "University of Florida - CTS-IT"
+        }
+      ],
+    "system-settings" : [
+      {
+        "key" : "ssptf_sender_address",
+        "name" : "'From Address' for all emails sent by this module should a save event fail",
+        "required": true,
+        "type": "text",
+        "repeatable": false
+      },
+      {
+        "key": "ssptf_cc",
+        "name": "Email address that will be CC'd in every email sent by this module should a save event fail",
+        "required": false,
+        "type": "text",
+        "repeatable": false
+      }
+    ],
+    "project-settings": [
+      {
+         "key": "ssptf_receiver_address",
+         "name": "Email address that will receive generated PDFs should this module be unable to save the PDF",
+         "required": true,
+         "type": "text",
+         "repeatable": false
+      },
+      {
+          "key": "ssptf_source_target_pairs",
+          "name": "instrument-upload_field pair",
+          "required": true,
+          "type": "sub_settings",
+          "repeatable": true,
+          "sub_settings": [
+            {
+              "key": "ssptf_source_instrument",
+              "name": "Name of survey instrument that should be saved to the upload field",
+              "required": true,
+              "type": "form-list",
+              "repeatable": false
+            },
+            {
+              "key": "ssptf_target_upload_field",
+              "name": "Field where PDFs of the survey named above should be saved",
+              "required": true,
+              "type": "field-list",
+              "repeatable": false
+            }
+          ]
+      }
+    ]
+}
