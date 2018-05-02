@@ -72,7 +72,7 @@ class ExternalModule extends AbstractExternalModule {
           logMessage("<font color='green'>SUCCESS</font><br>save_survey_pdf_to_field uploaded new PDF", $log_info);
       } else {
           //log failure
-          logMessage("ERROR: PDF of an instrument could not be saved.");
+          logMessage("<font color='red'>ERROR</font><br>save_survey_pdf_to_field failed to save PDF", $log_info);
 
           //send error email
           $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
@@ -89,7 +89,7 @@ class ExternalModule extends AbstractExternalModule {
 
           //notify user if email failed to send
           if (!$sent) {
-            logMessage("ERROR: could not send email containing the unsaved PDF of an instrument.");
+            logMessage("<font color='red'>ERROR</font><br>save_survey_pdf_to_field could not send email containing PDF", $log_info);
           } else {
             logMessage("<font color='green'>SUCCESS</font><br>save_survey_pdf_to_field sent email containing PDF", $log_info);
           }
