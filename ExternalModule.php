@@ -69,10 +69,10 @@ class ExternalModule extends AbstractExternalModule {
           setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
 
           $log_info["upload_field_name"] = $target_upload_field_name;
-          logMessage("<font color='green'>SUCCESS</font><br>save_survey_pdf_to_field uploaded new PDF", $log_info);
+          logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", $record, $event_id, $project_id);
       } else {
           //log failure
-          logMessage("<font color='red'>ERROR</font><br>save_survey_pdf_to_field failed to save PDF", $log_info);
+          logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", $record, $event_id, $project_id);
 
           //send error email
           $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
@@ -89,9 +89,9 @@ class ExternalModule extends AbstractExternalModule {
 
           //notify user if email failed to send
           if (!$sent) {
-            logMessage("<font color='red'>ERROR</font><br>save_survey_pdf_to_field could not send email containing PDF", $log_info);
+            logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field could not send email containing the PDF from the '$instrument' instrument.", $record, $event_id, $project_id);
           } else {
-            logMessage("<font color='green'>SUCCESS</font><br>save_survey_pdf_to_field sent email containing PDF", $log_info);
+            logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field sent an email containing the PDF from the '$instrument' instrument.", $record, $event_id, $project_id);
           }
       }
 
