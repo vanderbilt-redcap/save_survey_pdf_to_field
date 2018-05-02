@@ -60,15 +60,11 @@ class ExternalModule extends AbstractExternalModule {
       //make pdf and store it in a temp directory
       $path_to_temp_file = makePDF($project_id, $record, $instrument, $event_id, $repeat_instance);
 
-      //create informational array to add context to log messages
-      $log_info = ["record" => $record, "instrument" => $instrument];
-
       if ($writable) {
           //upload pdf into designated upload field
           $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
           setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
 
-          $log_info["upload_field_name"] = $target_upload_field_name;
           logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", $record, $event_id, $project_id);
       } else {
           //log failure
