@@ -181,7 +181,7 @@ function sendEmail($receiver, $sender, $cc = '', $subject, $body, $attachment_fi
   return $email->send();
 }
 
-function logMessage($message) {
-  REDCap::logEvent($message);
+function logMessage($message, $info_array) {
+  REDCap::logEvent($message, print_r($info_array, true));
 }
 ?>

@@ -60,13 +60,19 @@ class ExternalModule extends AbstractExternalModule {
       //make pdf and store it in a temp directory
       $path_to_temp_file = makePDF($project_id, $record, $instrument, $event_id, $repeat_instance);
 
+      //create informational array to add context to log messages
+      $log_info = ["record" => $record, "instrument" => $instrument];
+
       if ($writable) {
-        //upload pdf into designated upload field
-        $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
-        setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
+          //upload pdf into designated upload field
+          $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
+          setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
+
+          $log_info["upload_field_name"] = $target_upload_field_name;
+          logMessage("<font color='green'>SUCCESS</font><br>save_survey_pdf_to_field uploaded new PDF", $log_info);
       } else {
           //log failure
-          logMessage("ERROR: PDF of an instrument could not be saved.");
+          logMessage("<font color='red'>ERROR</font><br>save_survey_pdf_to_field failed to save PDF", $log_info);
 
           //send error email
           $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
@@ -83,7 +89,9 @@ class ExternalModule extends AbstractExternalModule {
 
           //notify user if email failed to send
           if (!$sent) {
-            logMessage("ERROR: could not send email containing the unsaved PDF of an instrument.");
+            logMessage("<font color='red'>ERROR</font><br>save_survey_pdf_to_field could not send email containing PDF", $log_info);
+          } else {
+            logMessage("<font color='green'>SUCCESS</font><br>save_survey_pdf_to_field sent email containing PDF", $log_info);
           }
       }
 
