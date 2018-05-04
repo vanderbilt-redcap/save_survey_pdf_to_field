@@ -61,12 +61,14 @@ class ExternalModule extends AbstractExternalModule {
       $path_to_temp_file = makePDF($project_id, $record, $instrument, $event_id, $repeat_instance);
 
       if ($writable) {
-        //upload pdf into designated upload field
-        $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
-        setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
+          //upload pdf into designated upload field
+          $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
+          setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
+
+          logAction("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", $record, $event_id, $project_id);
       } else {
           //log failure
-          logMessage("ERROR: PDF of an instrument could not be saved.");
+          logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", $record, $event_id, $project_id);
 
           //send error email
           $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
@@ -83,7 +85,9 @@ class ExternalModule extends AbstractExternalModule {
 
           //notify user if email failed to send
           if (!$sent) {
-            logMessage("ERROR: could not send email containing the unsaved PDF of an instrument.");
+            logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field could not send email containing the PDF from the '$instrument' instrument.", $record, $event_id, $project_id);
+          } else {
+            logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field sent an email containing the PDF from the '$instrument' instrument.", $record, $event_id, $project_id);
           }
       }
 
