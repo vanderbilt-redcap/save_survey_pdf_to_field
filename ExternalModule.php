@@ -65,7 +65,7 @@ class ExternalModule extends AbstractExternalModule {
           $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
           setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
 
-          logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", $record, $event_id, $project_id);
+          logAction("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", $record, $event_id, $project_id);
       } else {
           //log failure
           logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", $record, $event_id, $project_id);
