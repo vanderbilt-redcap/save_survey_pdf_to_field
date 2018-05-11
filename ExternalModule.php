@@ -22,6 +22,8 @@ class ExternalModule extends AbstractExternalModule {
      */
     function hook_survey_complete($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
 
+      global $redcap_version;
+
       $source_instruments = AbstractExternalModule::getProjectSetting('ssptf_source_instrument');
 
       //check if instrument is the same one set in config
@@ -75,7 +77,7 @@ class ExternalModule extends AbstractExternalModule {
           $sender_addr = AbstractExternalModule::getSystemSetting('ssptf_sender_address');
           $cc = AbstractExternalModule::getSystemSetting('ssptf_cc');
           $subject = "ERROR: PDF of REDCap instrument could not be saved.";
-          $url = "http://". $_SERVER["HTTP_HOST"] . "/redcap/redcap_v" . REDCAP_VERSION . "/DataEntry/record_home.php?pid=" . $project_id . "&id=" . $record . "&arm=" . getArm();
+          $url = APP_PATH_WEBROOT_FULL . 'redcap_v' . $redcap_version . "/DataEntry/record_home.php?pid=" . $project_id . "&id=" . $record . "&arm=" . getArm();
           $body = "ERROR: REDCap failed to save a PDF of an instrument for this
           research subject: " . "<a href=\"". $url . "\">" . $url . "</a>" .
           " That document is attached to this message. Please review this REDCap
