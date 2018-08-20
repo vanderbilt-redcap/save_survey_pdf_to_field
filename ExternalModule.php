@@ -49,7 +49,7 @@ class ExternalModule extends AbstractExternalModule {
       //check if we can write to $target_upload_field_name else check other base name variations
       $writable = false;
       for($count = $index; $count <= ATTEMPT_LIMIT + 1; $count++) {
-        if(doesFieldExist($target_upload_field_name . $extension) && !fieldHasValue($project_id, $record, $target_upload_field_name . $extension, $event))
+        if(doesFieldExist($target_upload_field_name . $extension) && !fieldHasValue($project_id, $record, $target_upload_field_name . $extension, $event_id))
         {
           $target_upload_field_name = $target_upload_field_name . $extension;
           $writable = true;
