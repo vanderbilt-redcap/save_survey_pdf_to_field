@@ -8,6 +8,7 @@ namespace SaveSurveyPdfToFieldModule\ExternalModule;
 
 use ExternalModules\AbstractExternalModule;
 use ExternalModules\ExternalModules;
+use REDCap;
 
 require_once "utility.php";
 define("ATTEMPT_LIMIT", 30);
@@ -22,7 +23,7 @@ class ExternalModule extends AbstractExternalModule {
      */
     function hook_survey_complete($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
 
-      global $redcap_version;
+      global $Proj, $redcap_version;
 
       $source_instruments = AbstractExternalModule::getProjectSetting('ssptf_source_instrument');
 
@@ -48,10 +49,12 @@ class ExternalModule extends AbstractExternalModule {
 
       //check if we can write to $target_upload_field_name else check other base name variations
       $writable = false;
+      $extension = '';
       for($count = $index; $count <= ATTEMPT_LIMIT + 1; $count++) {
-        if(doesFieldExist($target_upload_field_name . $extension) && !fieldHasValue($project_id, $record, $target_upload_field_name . $extension, $event))
+        $field = $target_upload_field_name . $extension;
+        if(isset($Proj->metadata[$field]) && $Proj->metadata[$field]['element_type'] == 'file' && !fieldHasValue($project_id, $record, $field, $event_id))
         {
-          $target_upload_field_name = $target_upload_field_name . $extension;
+          $target_upload_field_name = $field;
           $writable = true;
           break;
         }
@@ -67,10 +70,10 @@ class ExternalModule extends AbstractExternalModule {
           $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
           setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
 
-          logAction("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", $record, $event_id, $project_id);
+          REDCap::logEvent("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", null, $record, $event_id, $project_id);
       } else {
           //log failure
-          logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", $record, $event_id, $project_id);
+          REDCap::logEvent("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", null, $record, $event_id, $project_id);
 
           //send error email
           $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
@@ -87,9 +90,9 @@ class ExternalModule extends AbstractExternalModule {
 
           //notify user if email failed to send
           if (!$sent) {
-            logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field could not send email containing the PDF from the '$instrument' instrument.", $record, $event_id, $project_id);
+            REDCap::logEvent("save_survey_pdf_to_field alert", "save_survey_pdf_to_field could not send email containing the PDF from the '$instrument' instrument.", null, $record, $event_id, $project_id);
           } else {
-            logAction("save_survey_pdf_to_field alert", "save_survey_pdf_to_field sent an email containing the PDF from the '$instrument' instrument.", $record, $event_id, $project_id);
+            REDCap::logEvent("save_survey_pdf_to_field alert", "save_survey_pdf_to_field sent an email containing the PDF from the '$instrument' instrument.", null, $record, $event_id, $project_id);
           }
       }
 

@@ -1,11 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-require_once APP_PATH_DOCROOT . '../redcap_connect.php';
-require_once APP_PATH_DOCROOT . 'Classes/Files.php';
-require_once APP_PATH_DOCROOT . 'Classes/Message.php';
-
 /**
  * Creates a pdf of the given instrument.
  *
@@ -91,7 +85,10 @@ function setUploadField($project_id, $record, $event, $field, $doc_id) {
     return false;
   }
 
-  $query = "INSERT INTO redcap_data (project_id, event_id, record, field_name, value, instance) VALUES('$project_id', '$event', '$record', '$field', '$doc_id', NULL)";
+  $query = '
+    INSERT INTO redcap_data (project_id, event_id, record, field_name, value, instance)
+    VALUES(' . intval($project_id) . ', ' . intval($event) . ', "' . db_escape($record) . '", "' . db_escape($field) . '", ' . intval($doc_id) . ', NULL)';
+
   $result = $conn->query($query);
   if(!$result) {
     return false;
@@ -120,29 +117,8 @@ function setUploadField($project_id, $record, $event, $field, $doc_id) {
  *  returns true if it has a value, false otherwise
  */
 function fieldHasValue($project, $record, $field, $event) {
-  $fields = REDCap::getData($project, 'json', $record, $field, $event);
-  $value = json_decode($fields, true)[0][$field];
-  return isset($value) && !is_null($value) && $value !== "";
-}
-
-/**
- * Checks if the given field has a value in that specific project and record
- *
- * @param $field
- *  field name
- *
- * @return boolean
- *  returns true if it exists, false otherwise
- */
-function doesFieldExist($field){
-  global $Proj;
-  $fields = array_keys($Proj->metadata);
-
-  if (array_search($field, $fields) === false) {
-    return false;
-  }
-
-  return true;
+  $fields = REDCap::getData($project, 'array', $record, $field, $event);
+  return !empty($fields[$record][$event][$field]);
 }
 
 /**
@@ -171,7 +147,7 @@ function doesFieldExist($field){
  *  returns true if email is successfully sent, false otherwise
  */
 function sendEmail($receiver, $sender, $cc = '', $subject, $body, $attachment_file_path = NULL) {
-  $email = new Message;
+  $email = new Message();
   $email->setTo($receiver);
   $email->setFrom($sender);
   $email->setCc($cc);
@@ -179,9 +155,5 @@ function sendEmail($receiver, $sender, $cc = '', $subject, $body, $attachment_fi
   $email->setAttachment($attachment_file_path);
   $email->setBody($body);
   return $email->send();
-}
-
-function logAction($action, $changes_made, $record=null, $event_id=null, $project_id=null) {
-  REDCap::logEvent($action, $changes_made, null, $record, $event_id, $project_id);
 }
 ?>
