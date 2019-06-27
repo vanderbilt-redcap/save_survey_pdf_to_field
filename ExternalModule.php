@@ -21,7 +21,7 @@ class ExternalModule extends AbstractExternalModule {
     /**
      * @inheritdoc.
      */
-    function hook_survey_complete($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
+    function redcap_save_record($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
 
       global $Proj, $redcap_version;
 
@@ -46,7 +46,7 @@ class ExternalModule extends AbstractExternalModule {
           $target_upload_field_name = $matches[1];
           $index = (int)$matches[2];
       }
-
+		file_put_contents("C:/vumc/log.txt", "log start\n");
       //check if we can write to $target_upload_field_name else check other base name variations
       $writable = false;
       $extension = '';
@@ -57,7 +57,10 @@ class ExternalModule extends AbstractExternalModule {
           $target_upload_field_name = $field;
           $writable = true;
           break;
-        }
+        } else if (isset($Proj->metadata[$field]) && $Proj->metadata[$field]['element_type'] == 'file' && fieldHasValue($project_id, $record, $field, $event_id)) {
+			$lastFilledField = $field;
+			file_put_contents("C:/vumc/log.txt", "\$lastFilledField: $lastFilledField" . "\n", FILE_APPEND);
+		}
 
         $extension = "_" . $count;
       }
@@ -71,7 +74,13 @@ class ExternalModule extends AbstractExternalModule {
           setUploadField($project_id, $record, $event_id, $target_upload_field_name, $doc_id);
 
           REDCap::logEvent("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", null, $record, $event_id, $project_id);
-      } else {
+      } else if (!$writable and !empty($lastFilledField)) {
+          //upload pdf into last field in sequence even though it has a value
+          $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
+          setUploadField($project_id, $record, $event_id, $lastFilledField, $doc_id);
+
+          REDCap::logEvent("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$lastFilledField = $doc_id", null, $record, $event_id, $project_id);
+	  } else {
           //log failure
           REDCap::logEvent("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", null, $record, $event_id, $project_id);
 

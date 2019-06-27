@@ -3,7 +3,7 @@
     "namespace": "SaveSurveyPdfToFieldModule\\ExternalModule",
     "description": "This module generates a PDF of a survey upon completion and saves it to a REDCap file upload field. It is configured at the project level with source instrument/target field pairs. In the event of save errors, the PDF is sent to a backup email address.",
     "permissions": [
-        "hook_survey_complete"
+        "redcap_save_record"
     ],
     "authors": [
         {
