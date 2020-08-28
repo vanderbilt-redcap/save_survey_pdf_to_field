@@ -90,7 +90,7 @@
               },
               {
                   "key": "ssptf_dont_cascade",
-                  "name": "Turn off PDF history tracking?",
+                  "name": "Save only to this exact field?",
                   "type": "radio",
                   "repeatable": false,
                   "choices": [
