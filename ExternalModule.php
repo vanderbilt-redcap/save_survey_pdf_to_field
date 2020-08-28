@@ -42,7 +42,7 @@ class ExternalModule extends AbstractExternalModule {
         $target_fields = $this->getProjectSetting('ssptf_target_upload_field');
         $source_instruments = $this->getProjectSetting('ssptf_source_instrument');
         $dataEntrySave = $this->getProjectSetting('ssptf_data_entry_save');
-        $cascadeSkip = $this->getProjectSetting('ssptf_dont_cascase');
+        $cascadeSkip = $this->getProjectSetting('ssptf_dont_cascade');
 
         $fieldsToPush = [];
         foreach($source_instruments as $fieldKey => $tempInstrument) {
@@ -61,11 +61,12 @@ class ExternalModule extends AbstractExternalModule {
             return 0;
         }
 
-        //make pdf and store it in a temp directory
-        $path_to_temp_file = makePDF($project_id, $record, $instrument, $event_id, $repeat_instance);
-
         foreach($fieldsToPush as $fieldKey => $target_upload_field) {
+            //make pdf and store it in a temp directory
+            $path_to_temp_file = makePDF($project_id, $record, $instrument, $event_id, $repeat_instance);
+
             $writable = false;
+            $lastFilledField = false;
             if(empty($this->getFieldValue($project_id, $record, $target_upload_field, $event_id))) {
                 $writable = true;
             }
@@ -74,14 +75,14 @@ class ExternalModule extends AbstractExternalModule {
             }
 
             if($cascadeSkip[$fieldKey] != "1") {
-                $index = 1;
-                $matches = array();
-                if (preg_match('#^(.+)_([0-9]+)$#', $target_upload_field, $matches)) {
-                    $target_upload_field = $matches[1];
-                    $index = (int)$matches[2];
-                }
-
                 if(!$writable) {
+                    $index = 1;
+                    $matches = array();
+                    if (preg_match('#^(.+)_([0-9]+)$#', $target_upload_field, $matches)) {
+                        $target_upload_field = $matches[1];
+                        $index = (int)$matches[2];
+                    }
+
                     //check if we can write to $target_upload_field_name else check other base name variations
                     for($count = $index; $count <= ATTEMPT_LIMIT + 1; $count++) {
                         $field = $target_upload_field . "_" . $count;
@@ -105,7 +106,7 @@ class ExternalModule extends AbstractExternalModule {
                 $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
                 setUploadField($project_id, $record, $event_id, $target_upload_field, $doc_id);
 
-                REDCap::logEvent("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field_name = $doc_id", null, $record, $event_id, $project_id);
+                REDCap::logEvent("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$target_upload_field = $doc_id", null, $record, $event_id, $project_id);
             } else if (!$writable and !empty($lastFilledField)) {
                 //upload pdf into last field in sequence even though it has a value
                 $doc_id = uploadPdfToEdocs($path_to_temp_file, $instrument);
@@ -114,7 +115,7 @@ class ExternalModule extends AbstractExternalModule {
                 REDCap::logEvent("save_survey_pdf_to_field", "save_survey_pdf_to_field uploaded a new PDF to a field.\n$lastFilledField = $doc_id", null, $record, $event_id, $project_id);
             } else {
                 //log failure
-                REDCap::logEvent("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field_name' field.", null, $record, $event_id, $project_id);
+                REDCap::logEvent("save_survey_pdf_to_field alert", "save_survey_pdf_to_field failed to save a PDF from the '$instrument' instrument to the '$target_upload_field' field.", null, $record, $event_id, $project_id);
 
                 //send error email
                 $receiver_addr = AbstractExternalModule::getProjectSetting('ssptf_receiver_address');
