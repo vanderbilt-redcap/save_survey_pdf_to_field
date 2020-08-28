@@ -98,28 +98,6 @@ function setUploadField($project_id, $record, $event, $field, $doc_id) {
 }
 
 
-/**
- * Checks if the given field has a value in that specific project and record
- *
- * @param $project
- *  project id
- *
- * @param $record
- *  record id
- *
- * @param $field
- *  field name
- *
- * @param $event
- *  event id
- *
- * @return boolean
- *  returns true if it has a value, false otherwise
- */
-function fieldHasValue($project, $record, $field, $event) {
-  $fields = REDCap::getData($project, 'array', $record, $field, $event);
-  return !empty($fields[$record][$event][$field]);
-}
 
 /**
  * sends an email with the given parameters. Can optionally cc and add attachments

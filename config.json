@@ -76,7 +76,27 @@
               "required": true,
               "type": "field-list",
               "repeatable": false
-            }
+            },
+              {
+                  "key": "ssptf_data_entry_save",
+                  "name": "Run PDF Save from Data Entry Form too?",
+                  "type": "radio",
+                  "repeatable": false,
+                  "choices": [
+                      {"value":"1","name":"Yes"},
+                      {"value":"0","name":"No"}
+                  ]
+              },
+              {
+                  "key": "ssptf_dont_cascade",
+                  "name": "Turn off PDF history tracking?",
+                  "type": "radio",
+                  "repeatable": false,
+                  "choices": [
+                      {"value":"1","name":"Yes"},
+                      {"value":"0","name":"No"}
+                  ]
+              }
           ]
       }
     ],
