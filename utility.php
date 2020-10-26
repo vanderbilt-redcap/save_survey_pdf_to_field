@@ -1,5 +1,6 @@
 <?php
 
+namespace SaveSurveyPdfToFieldModule\ExternalModule;
 /**
  * Creates a pdf of the given instrument.
  *
@@ -28,7 +29,7 @@ function makePDF($project_id, $record, $instrument, $event_id, $repeat_instance)
               "_event" . $event_id .
               "_instance" . $repeat_instance .
               "_" . date("Ymd") . ".pdf";
-  $pdf_content = REDCap::getPDF($record, $instrument, $event_id, false, $repeat_instance);
+  $pdf_content = \REDCap::getPDF($record, $instrument, $event_id, false, $repeat_instance);
   $full_path_to_temp_file = APP_PATH_TEMP . $filename;
   file_put_contents($full_path_to_temp_file, $pdf_content);
   return $full_path_to_temp_file;
@@ -52,7 +53,7 @@ function uploadPdfToEdocs($file_path, $filename) {
   $_FILE['name'] = $filename . "_" . date('Y-m-d_Hi') . ".pdf";
   $_FILE['tmp_name'] = $file_path;
   $_FILE['size'] = filesize($_FILE['tmp_name']);
-  $doc_id = Files::uploadFile($_FILE);
+  $doc_id = \Files::uploadFile($_FILE);
   return $doc_id;
 }
 
@@ -125,7 +126,7 @@ function setUploadField($project_id, $record, $event, $field, $doc_id) {
  *  returns true if email is successfully sent, false otherwise
  */
 function sendEmail($receiver, $sender, $cc = '', $subject, $body, $attachment_file_path = NULL) {
-  $email = new Message();
+  $email = new \Message();
   $email->setTo($receiver);
   $email->setFrom($sender);
   $email->setCc($cc);
