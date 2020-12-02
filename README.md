@@ -2,6 +2,9 @@
 
 This REDCap module generates a PDF of a survey upon completion and saves it to a REDCap file upload field. It is configured at the project level with source instrument/target field pairs. In the event of save errors, the PDF is sent to a backup email address.
 
+<span style="color:red">
+NOTE: This module has been modified for use in Vanderbilt’s system. Features may differ from the authors’ original information on this page. Please read the final section on this page for more details.
+</span>
 ## Prerequisites
 - REDCap >= 8.0.0 (for versions < 8.0.0, [REDCap Modules](https://github.com/vanderbilt/redcap-external-modules) is required).
 
@@ -42,3 +45,14 @@ Once the first PDF has been saved, those same fields would look like this in the
 If the module cannot save the PDF it will attempt to send an email with the PDF attached to the email address configured on the project.  It will use the _From Address_ configured at the system level for the module. It will also log an error to the projects REDCap log.  Should the _email_ fail, that will also be logged.  Those log events look like this:
 
 ![Errors in the REDCap project log](img/errors_in_the_log.png)
+
+####Notes about Vanderbilt’s version of this module: 
+
+This module has been modified for use in Vanderbilt’s system. The original authors’ information is still available on this page and should still be accurate in most cases. But some features may differ. The module is now developed by Vanderbilt’s Data Core (datacore@vumc.org). Here are some notes about Vanderbilt’s version:
+1.	The File Upload field can be located on any type of instrument, not just a survey. Field logging is not accessible via the History icon on the instrument.
+2.	The module works best with classic project designs – meaning the longitudinal module and repeatable instruments/events features should be disabled in most situations. (If enabling the longitudinal module is necessary, the survey being saved to the module and the File Upload field for the PDF should both be located on the same longitudinal event. And if using this module with repeatable instruments/events is necessary, be aware that instance data may be overwritten/lost, e.g. if the survey is saved multiple times.) 
+3.	If editing of the survey data is allowed, the File Upload field will automatically save and overwrite the PDF with the new version (even if the File Upload field is itself located on another survey which does not allow editing). Previous versions of the PDF are not stored anywhere so are lost. 
+4.	The 'Run PDF Save from Data Entry Form too' feature does not activate when the instrument’s form status is Incomplete. Save using another status (e.g. Unverified, Complete) to activate this feature.
+5.	If the File Upload field’s variable name used in this module is changed after configuration of this module, the module will NOT update the variable name automatically. The PDF will simply fail to upload, with no warning, orphaning the data and making it inaccessible. Update the module configuration on the project’s External Modules page manually to ensure the current variable name is always selected.
+6.	In case of errors, the feature to send an email with the PDF attached does not actually attach the PDF in most cases. It simply sends the email, with no copy of the PDF.
+7.	The module works well with REDCap’s emailing features (e.g. Alerts & Notifications, Automated Survey Invitations). The timing for sending the email should be set to at least one minute after the survey completion, to ensure the PDF is fully saved before the emailing features try to attach it to the email message.
