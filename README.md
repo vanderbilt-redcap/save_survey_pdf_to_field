@@ -46,10 +46,10 @@ If the module cannot save the PDF it will attempt to send an email with the PDF 
 
 ![Errors in the REDCap project log](img/errors_in_the_log.png)
 
-####Notes about Vanderbilt’s version of this module: 
+##Notes about Vanderbilt’s version of this module: 
 
-This module has been modified for use in Vanderbilt’s system. The original authors’ information is still available on this page and should still be accurate in most cases. But some features may differ. The module is now developed by Vanderbilt’s Data Core (datacore@vumc.org). Here are some notes about Vanderbilt’s version:
-1.	The File Upload field can be located on any type of instrument, not just a survey. Field logging is not accessible via the History icon on the instrument.
+This module has been modified for use in Vanderbilt’s system. The original authors’ instructions are still available on this page and should still be accurate in most cases. But some features may differ. The module is now developed by Vanderbilt’s Data Core (datacore@vumc.org). Here are some notes about Vanderbilt’s version:
+1.	The File Upload field can be located on any type of instrument, not just a non-survey. Field logging is not accessible via the History icon on the instrument.
 2.	The module works best with classic project designs – meaning the longitudinal module and repeatable instruments/events features should be disabled in most situations. (If enabling the longitudinal module is necessary, the survey being saved to the module and the File Upload field for the PDF should both be located on the same longitudinal event. And if using this module with repeatable instruments/events is necessary, be aware that instance data may be overwritten/lost, e.g. if the survey is saved multiple times.) 
 3.	If editing of the survey data is allowed, the File Upload field will automatically save and overwrite the PDF with the new version (even if the File Upload field is itself located on another survey which does not allow editing). Previous versions of the PDF are not stored anywhere so are lost. 
 4.	The 'Run PDF Save from Data Entry Form too' feature does not activate when the instrument’s form status is Incomplete. Save using another status (e.g. Unverified, Complete) to activate this feature.
