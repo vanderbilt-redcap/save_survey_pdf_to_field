@@ -87,7 +87,7 @@ function setUploadField($project_id, $record, $event, $field, $doc_id) {
   }
 
   $query = '
-    INSERT INTO redcap_data (project_id, event_id, record, field_name, value, instance)
+    INSERT INTO '.\REDCap::getDataTable($project_id).' (project_id, event_id, record, field_name, value, instance)
     VALUES(' . intval($project_id) . ', ' . intval($event) . ', "' . db_escape($record) . '", "' . db_escape($field) . '", ' . intval($doc_id) . ', NULL)';
 
   $result = $conn->query($query);
